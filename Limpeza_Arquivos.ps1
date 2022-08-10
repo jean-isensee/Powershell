@@ -3,7 +3,7 @@
 # Pasta
 $pasta = "Nome_da_Pasta"
 
-#Limite de Dias
-$dias = 99
+#Limite de Dias, necessita ser negativo, pois é contado a partir de hoje menos dias.
+$dias = -99
 
-forFiles /S /P $pasta /D $dias /C “cmd /c if @isdir==TRUE rd /s /q @file” & forFiles /S /P
+Get-ChildItem $pasta -Recurse | Where-Object {($_.LastWriteTime -lt (Get-Date).AddDays($dias))}| Remove-Item
